@@ -32,7 +32,7 @@ class FolioAppBarLayout : AppBarLayout {
             navigationBarHeight = insets.systemWindowInsetBottom
 
             setMargins(
-                insets.systemWindowInsetLeft, insets.systemWindowInsetTop,
+                insets.systemWindowInsetLeft, insets.systemWindowInsetBottom,
                 insets.systemWindowInsetRight
             )
             insets
@@ -47,22 +47,22 @@ class FolioAppBarLayout : AppBarLayout {
 
         navigationBarHeight = insets!!.bottom
 
-        setMargins(insets.left, insets.top, insets.right)
+        setMargins(insets.left, insets.bottom, insets.right)
         return super.fitSystemWindows(insets)
     }
 
-    private fun setMargins(left: Int, top: Int, right: Int) {
+    private fun setMargins(left: Int, bottom: Int, right: Int) {
 
         val marginLayoutParams = layoutParams as MarginLayoutParams
         marginLayoutParams.leftMargin = left
-        marginLayoutParams.topMargin = top
+        marginLayoutParams.bottomMargin = bottom
         marginLayoutParams.rightMargin = right
         layoutParams = marginLayoutParams
     }
 
-    fun setTopMargin(top: Int) {
+    fun setTopMargin(bottom: Int) {
         val marginLayoutParams = layoutParams as MarginLayoutParams
-        marginLayoutParams.topMargin = top
+        marginLayoutParams.bottomMargin = bottom
         layoutParams = marginLayoutParams
     }
 }
