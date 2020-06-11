@@ -40,6 +40,7 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -58,13 +59,12 @@ import com.folioreader.ui.adapter.FolioPageFragmentAdapter
 import com.folioreader.ui.adapter.SearchAdapter
 import com.folioreader.ui.fragment.FolioPageFragment
 import com.folioreader.ui.fragment.MediaControllerFragment
-import com.folioreader.ui.view.ConfigBottomSheetDialogFragment
-import com.folioreader.ui.view.DirectionalViewpager
-import com.folioreader.ui.view.FolioAppBarLayout
-import com.folioreader.ui.view.MediaControllerCallback
+import com.folioreader.ui.view.*
 import com.folioreader.util.AppUtil
 import com.folioreader.util.FileUtil
 import com.folioreader.util.UiUtil
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.android.synthetic.main.activity_content_highlight.*
 import org.greenrobot.eventbus.EventBus
 import org.readium.r2.shared.Link
 import org.readium.r2.shared.Publication
@@ -85,6 +85,11 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
     private var toolbar: Toolbar? = null
     private var distractionFreeMode: Boolean = false
     private var handler: Handler? = null
+    private var menuReader: LinearLayoutCompat? = null
+    private var menuBookmarks: FloatingActionButton? = null
+    private var menuContentTable: FloatingActionButton? = null
+    private var menuConfiguration: FloatingActionButton? = null
+    private var iconBack: FloatingActionButton? = null
 
     private var currentChapterIndex: Int = 0
     private var mFolioPageFragmentAdapter: FolioPageFragmentAdapter? = null
@@ -279,6 +284,7 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
                 .getString(FolioActivity.INTENT_EPUB_SOURCE_PATH)
         }
 
+        initMenuButtons()
         initActionBar()
         initMediaController()
 
@@ -297,18 +303,36 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
         }
     }
 
+    private fun initMenuButtons() {
+        menuBookmarks = findViewById(R.id.menuBookmarks)
+        menuContentTable = findViewById(R.id.menuContentTable)
+        menuConfiguration = findViewById(R.id.menuConfiguration)
+        iconBack = findViewById(R.id.buttonBack)
+
+        menuConfiguration!!.setOnClickListener {
+            Log.v(LOG_TAG, "-> menuConfigurationClicked -> ")
+            showConfigBottomSheetDialogFragment()
+        }
+
+        menuContentTable!!.setOnClickListener {
+            Log.v(LOG_TAG, "-> menuHighlightClicked -> drawer")
+            startContentHighlightActivity()
+        }
+    }
+
     private fun initActionBar() {
 
+        menuReader = findViewById(R.id.menuReader)
         appBarLayout = findViewById(R.id.appBarLayout)
-        toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
+        //toolbar = findViewById(R.id.toolbar)
+        //setSupportActionBar(toolbar)
         actionBar = supportActionBar
 
         val config = AppUtil.getSavedConfig(applicationContext)!!
 
         val drawable = ContextCompat.getDrawable(this, R.drawable.ic_drawer)
         UiUtil.setColorIntToDrawable(config.themeColor, drawable!!)
-        toolbar!!.navigationIcon = drawable
+        //toolbar!!.navigationIcon = drawable
 
         if (config.isNightMode) {
             setNightMode()
@@ -336,20 +360,33 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
 
     override fun setDayMode() {
         Log.v(LOG_TAG, "-> setDayMode")
+        //TODO este codigo muestra el contenido del appBar segun si es modo dia o noche igual que la funcion  siguinte, aplicarlo al constrain del los botones
 
+        menuReader!!.setBackgroundDrawable(
+            ColorDrawable(ContextCompat.getColor(this, R.color.white))
+        )
+
+        /*
         actionBar!!.setBackgroundDrawable(
             ColorDrawable(ContextCompat.getColor(this, R.color.white))
         )
         toolbar!!.setTitleTextColor(ContextCompat.getColor(this, R.color.black))
+        */
     }
 
     override fun setNightMode() {
         Log.v(LOG_TAG, "-> setNightMode")
 
+        menuReader!!.setBackgroundDrawable(
+            ColorDrawable(ContextCompat.getColor(this, R.color.black))
+        )
+
+        /*
         actionBar!!.setBackgroundDrawable(
             ColorDrawable(ContextCompat.getColor(this, R.color.black))
         )
         toolbar!!.setTitleTextColor(ContextCompat.getColor(this, R.color.night_title_text_color))
+        */
     }
 
     private fun initMediaController() {
@@ -695,6 +732,24 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
 
         distractionFreeMode = visibility != View.SYSTEM_UI_FLAG_VISIBLE
         Log.v(LOG_TAG, "-> distractionFreeMode = $distractionFreeMode")
+
+        // Show Hide Container menu
+        if (menuReader != null) {
+            if (distractionFreeMode) {
+                menuReader!!.visibility = View.GONE
+            } else {
+                menuReader!!.visibility = View.VISIBLE
+            }
+        }
+
+        // Show Hide Back Button
+        if (iconBack != null) {
+            if (distractionFreeMode) {
+                iconBack!!.hide()
+            } else {
+                iconBack!!.show()
+            }
+        }
 
         if (actionBar != null) {
             if (distractionFreeMode) {

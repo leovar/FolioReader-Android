@@ -8,6 +8,22 @@
     tools:context="com.folioreader.ui.activity.FolioActivity"
     tools:menu="@menu/menu_main">
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/buttonBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="32dp"
+        android:clickable="true"
+        android:src="@drawable/ic_baseline_arrow_back_24"
+        android:text="Add Data"
+        app:layout_constraintStart_toStartOf="@id/main"
+        app:layout_constraintTop_toTopOf="parent"
+        app:backgroundTint="@color/white"
+        app:fabCustomSize="40dp"
+        app:tint="@color/black"
+        app:icon="@drawable/ic_baseline_arrow_back_24"/>
+
     <com.folioreader.ui.view.DirectionalViewpager
         android:id="@+id/folioPageViewPager"
         android:layout_width="0dp"
@@ -24,30 +40,71 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:visible="false">
+        app:layout_constraintStart_toStartOf="parent">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/main_add_fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="16dp"
-            android:clickable="true"
-            android:src="@drawable/ic_baseline_add_24"
-            android:text="Add Data"
-            app:backgroundTint="@color/colorAccent"
-            app:fabSize="normal"
-            app:icon="@drawable/ic_baseline_add_24"
-            app:rippleColor="@color/colorPrimaryDark" />
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/menuReader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/menuBookmarks"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:clickable="true"
+                android:src="@drawable/icon_note"
+                android:text="Add Data"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:backgroundTint="@color/colorPrimary"
+                app:fabCustomSize="48dp"
+                app:icon="@drawable/icon_note"/>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/menuContentTable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:clickable="true"
+                android:src="@drawable/icon_table_of_contents"
+                android:text="Add Data"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:backgroundTint="@color/colorPrimary"
+                app:fabCustomSize="48dp"
+                app:icon="@drawable/icon_table_of_contents"/>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/menuConfiguration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:clickable="true"
+                android:src="@drawable/icon_text"
+                android:text="Add Data"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:backgroundTint="@color/colorPrimary"
+                app:fabCustomSize="48dp"
+                app:icon="@drawable/icon_text"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+        <!--
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?android:attr/actionBarSize"
             app:contentInsetLeft="0dp"
             app:contentInsetStart="0dp"
+            android:visible="false"
             app:contentInsetStartWithNavigation="0dp"/>
+        -->
+
 
     </com.folioreader.ui.view.FolioAppBarLayout>
 
